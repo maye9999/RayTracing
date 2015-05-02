@@ -11,6 +11,7 @@ struct Vec
 
 	// Static Function
 	static Vec normalize(const Vec& vec);
+	static const Vec cross(const Vec& lhs, const Vec& rhs);
 
 	// Member Binary Operator
 	Vec& operator+=(const Vec& vec);
@@ -23,7 +24,6 @@ struct Vec
 	friend const Vec operator*(const Vec& vec, const double k);
 	friend const Vec operator*(const double k, const Vec& vec);
 	friend const Vec operator/(const Vec& vec, const double k);
-
 	friend std::ostream& operator<<(std::ostream& os, const Vec& vec);
 };
 
@@ -83,6 +83,11 @@ inline Vec Vec::normalize(const Vec& vec)
 {
 	double sum = sqrt(vec * vec);
 	return Vec(vec.x / sum, vec.y / sum, vec.z / sum);
+}
+
+inline const Vec Vec::cross(const Vec& lhs, const Vec& rhs)
+{
+	return Vec(lhs.y*rhs.z - lhs.z*rhs.y, lhs.z*rhs.x - lhs.x*rhs.z, lhs.x*rhs.y - lhs.y*rhs.x);
 }
 
 #endif	// __VEC_H_

@@ -87,7 +87,11 @@
     <ClInclude Include="vec.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="film.cpp" />
+    <ClCompile Include="raytracer.cpp" />
+    <ClCompile Include="sampler.cpp" />
+    <ClCompile Include="scene.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
