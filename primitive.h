@@ -29,5 +29,18 @@ private:
 };
 
 
+class Sphere : public Primitive
+{
+public:
+	Sphere(const Point& center_, double radius_) : Primitive(), center(center_), radius(radius_) {}
+	virtual bool intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo);
+	virtual bool intersectWithLight(const Ray& ray);
+	virtual const BRDF* getBRDF(const LocalGeometry& localGeo);
+	virtual void setBRDF(BRDF* brdf_);
+private:
+	Point center;
+	double radius;
+};
+
 
 #endif

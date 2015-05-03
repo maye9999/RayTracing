@@ -90,6 +90,7 @@ public:
 
 private:
 	cv::Mat_<cv::Vec3b> mat;
+	int height, width;
 };
 
 class Scene

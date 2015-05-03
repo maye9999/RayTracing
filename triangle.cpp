@@ -26,6 +26,7 @@ bool Triangle::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
 	cv::Vec3d x = mat.solve(cv::Vec3d(a.x - pos.x, a.y - pos.y, a.z - pos.z), 0);
 	if(fabs(x[0] - t) > EPS)
 	{
+		cerr << "ERR" << endl;
 		assert(0);
 	}
 	if (x[1] > EPS && x[1] < 1 + EPS && x[2] > EPS && x[2] < 1 + EPS && x[2] + x[1] < 1 + EPS)
