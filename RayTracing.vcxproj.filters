@@ -33,6 +33,9 @@
     <ClCompile Include="raytracer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="triangle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vec.h">
@@ -42,6 +45,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="mat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="primitive.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

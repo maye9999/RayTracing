@@ -6,13 +6,18 @@
 #include <climits>
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
+#include <vector>
 
 #define T_MAX INT_MAX
 const double PI = 3.141592654;
+const double EPS = 1e-6;
 
 typedef Vec Normal;
 typedef Vec Point;
 typedef Vec Color;
+
+class Scene;
+class Primitive;
 
 struct Sample
 {
@@ -71,7 +76,9 @@ struct Camera
 
 struct RayTracer
 {
+	RayTracer(Scene* s) : scene(s) {}
 	void tarce(const Ray& ray, int depth, Color& color);
+	Scene* scene;
 };
 
 class Film
@@ -91,11 +98,13 @@ public:
 	Scene(int width, int height);
 	void render();
 
+	std::vector<Primitive*> objects;
+	Camera camera;
 private:
 	Film film;
 	Sample sample;
 	Sampler sampler;
-	Camera camera;
+	
 	RayTracer ray_tracer;
 	Ray ray;
 	Color color;
