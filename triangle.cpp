@@ -36,7 +36,6 @@ bool Triangle::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
 		localGeo.normal = (tmp > EPS) ? -1.0 * norm : norm;
 		return true;
 	}
-	return false;
 }
 
 bool Triangle::intersectWithLight(const Ray& ray)
