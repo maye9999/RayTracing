@@ -21,7 +21,7 @@ int main()
 	scene.objects.insert(scene.objects.end(), &t1);
 	scene.objects.insert(scene.objects.end(), &t2);
 	scene.light_objects.insert(scene.light_objects.end(), &light);
-	scene.camera.setCamera(Point(0, 0, 4), Point(0, 0, 0), Vec(0, 1, 0), 30);
+	scene.camera.setCamera(Point(-4, -4, 4), Point(1, 0, 0), Vec(0, 1, 0), 30);
 	scene.render();
 	return 0;
 }
