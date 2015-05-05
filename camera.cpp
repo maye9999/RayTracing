@@ -14,8 +14,10 @@ void Camera::setCamera(Point eye, Point center, Vec up, double fov)
 
 void Camera::generateRay(const Sample& sample, Ray& ray)
 {
-	double alpha = fovx_tan * (sample.y - width / 2.0) / (width / 2.0);
-	double beta = fovy_tan * (sample.x - height / 2.0) / (height / 2.0);
+	double alpha = fovx_tan * (sample.x - width / 2.0) / (width / 2.0);
+	double beta = fovy_tan * (sample.y - height / 2.0) / (height / 2.0);
 	ray.direction = Vec::normalize(alpha * u + beta * v - w);
 	ray.start_position = eye;
+	ray.t_max = T_MAX;
+	ray.t_min = 0;
 }

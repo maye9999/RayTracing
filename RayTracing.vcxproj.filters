@@ -39,6 +39,9 @@
     <ClCompile Include="sphere.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="phong.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vec.h">
@@ -51,6 +54,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="primitive.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="phong.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

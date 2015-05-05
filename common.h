@@ -10,7 +10,7 @@
 
 #define T_MAX INT_MAX
 const double PI = 3.141592654;
-const double EPS = 1e-6;
+const double EPS = 1e-5;
 
 typedef Vec Normal;
 typedef Vec Point;
@@ -43,13 +43,26 @@ struct LocalGeometry
 	Normal normal;
 };
 
+class Light
+{
+	
+	//********************************************************
+	// Generate a Light ray from localGeo.pos to Light source
+	//********************************************************
+public:
+	virtual void generateLightRay(const LocalGeometry& localGeo, Ray& light_ray, Color& color) = 0;
+};
+
 class BRDF
 {
 public:
-	BRDF();
-	virtual ~BRDF();
+	BRDF() {}
+	virtual ~BRDF() {}
 	
-	virtual Color compute(const LocalGeometry& local_geo, const Ray& light_ray, const Color& light_color) = 0;
+	virtual Color compute(const LocalGeometry& local_geo,
+						const Ray& light_ray,
+						const Color& light_color,
+						const Vec& eye_dir) = 0;
 private:
 
 };
@@ -100,6 +113,7 @@ public:
 	void render();
 
 	std::vector<Primitive*> objects;
+	std::vector<Light*> light_objects;
 	Camera camera;
 private:
 	Film film;

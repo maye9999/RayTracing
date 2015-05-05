@@ -12,6 +12,7 @@ struct Vec
 	// Static Function
 	static Vec normalize(const Vec& vec);
 	static const Vec cross(const Vec& lhs, const Vec& rhs);
+	static const Vec mul(const Vec& lhs, const Vec& rhs);
 
 	// Member Binary Operator
 	Vec& operator+=(const Vec& vec);
@@ -88,6 +89,11 @@ inline Vec Vec::normalize(const Vec& vec)
 inline const Vec Vec::cross(const Vec& lhs, const Vec& rhs)
 {
 	return Vec(lhs.y*rhs.z - lhs.z*rhs.y, lhs.z*rhs.x - lhs.x*rhs.z, lhs.x*rhs.y - lhs.y*rhs.x);
+}
+
+inline const Vec Vec::mul(const Vec& lhs, const Vec& rhs)
+{
+	return Vec(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
 }
 
 #endif	// __VEC_H_

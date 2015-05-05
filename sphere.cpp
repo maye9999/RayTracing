@@ -13,6 +13,7 @@ bool Sphere::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
 	if (diff < -EPS)
 	{
 		// Inside Sphere
+		cerr << "In Sphere" << endl;
 		double tp = l * ray.direction;
 		double d_sqre = l * l - tp * tp;
 		assert(radius * radius - d_sqre > -EPS);
@@ -45,25 +46,63 @@ bool Sphere::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
 			return true;
 		} 
 		else
+		{
 			return false;
+		}
 	}
 	else
 	{
 		// On Sphere
 		cerr << "On Sphere" << endl;
 		localGeo.pos = ray.start_position;
-		localGeo.normal = (l * ray.direction > EPS) ? -1 * l : l;
+		localGeo.normal = Vec::normalize((l * ray.direction > EPS) ? -1 * l : l);
 		t_hit = 0;
 		return true;
 	}
+	// Numeric
+// 	double b = ray.direction * (ray.start_position - center);
+// 	double c = (ray.start_position - center) * (ray.start_position - center) - radius * radius;
+// 	if(b * b - c > -EPS)
+// 	{
+// 		return true;
+// 	}
+// 	return false;
 }
 
 bool Sphere::intersectWithLight(const Ray& ray)
 {
-	return false;
+	Vec l = center - ray.start_position;
+	double diff = l * l - radius * radius;
+	if (diff < -EPS)
+	{
+		// Inside Sphere
+		return true;
+	}
+	else if (diff > EPS)
+	{
+		// Outside Sphere
+		double tp = l * ray.direction;
+		if(tp < -EPS)
+			return false;
+		double d_sqre = l * l - tp * tp;
+		if(d_sqre - radius*radius > EPS)
+			return false;
+		double tmp = sqrt(radius * radius - d_sqre);
+		if (tp - tmp < ray.t_max + EPS)
+		{
+			return true;
+		} 
+		else
+			return false;
+	}
+	else
+	{
+		// On Sphere
+		return true;
+	}
 }
 
-const BRDF* Sphere::getBRDF(const LocalGeometry& localGeo)
+BRDF* Sphere::getBRDF(const LocalGeometry& localGeo)
 {
 	return brdf;
 }
