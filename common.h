@@ -10,7 +10,7 @@
 
 #define T_MAX INT_MAX
 const double PI = 3.141592654;
-const double EPS = 1e-6;
+const double EPS = 1E-7;
 
 typedef Vec Normal;
 typedef Vec Point;
