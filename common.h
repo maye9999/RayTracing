@@ -25,6 +25,20 @@ struct Sample
 	Sample(double x, double y) : x(x), y(y) {}
 };
 
+struct Material
+{
+	Vec ambient;
+	Vec diffuse;
+	Vec specular;
+	Vec reflect;
+	Vec refract;
+	double n;
+
+	Material() {}
+	Material(const Vec& ambient, const Vec& diffuse, const Vec& specular, double n, Vec reflect, Vec refract)
+		: ambient(ambient), diffuse(diffuse), specular(specular), n(n), reflect(reflect), refract(refract) {}
+};
+
 /************************************************************************/
 /* It Represents the ray P(t) = pos + t*dir, where t in [t_min, t_max]  */
 /************************************************************************/
@@ -41,6 +55,7 @@ struct LocalGeometry
 {
 	Point pos;
 	Normal normal;
+	Material* material;
 };
 
 class Light

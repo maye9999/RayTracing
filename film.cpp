@@ -28,9 +28,9 @@ void Film::commit(const Sample& sample, const Color& color)
 	if(cz > 255)
 		cz = 255;
 
-	mat(height - 1 - y, x)[0] = cx;
+	mat(height - 1 - y, x)[0] = cz;
 	mat(height - 1 - y, x)[1] = cy;
-	mat(height - 1 - y, x)[2] = cz;
+	mat(height - 1 - y, x)[2] = cx;
 }
 
 void Film::writeImage()

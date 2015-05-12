@@ -1,7 +1,7 @@
 #include "common.h"
 
 Scene::Scene(int width, int height)
-	: sample(0.5, 0.5), color(0, 0, 0), film(width, height),
+	: sample(0.5, 0.5), color(0, 0, 0), film(width, height), 
 	sampler(width, height), camera(width, height), ray_tracer(this)
 {
 

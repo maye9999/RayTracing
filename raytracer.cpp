@@ -18,7 +18,7 @@ void RayTracer::tarce(const Ray& ray, int depth, Color& color)
 		if(i->intersect(ray, t, localGeo))
 		{
 			is_intersect = true;
-			brdf = i->getBRDF(localGeo);
+			brdf = i->getBRDF();
 		}
 	}
 	if(!is_intersect)
@@ -27,6 +27,7 @@ void RayTracer::tarce(const Ray& ray, int depth, Color& color)
 	}
 	else
 	{
+		color += localGeo.material->ambient;
 		Vec eye_dir = Vec::normalize(scene->camera.eye - localGeo.pos);
 		for(auto i : scene->light_objects)
 		{

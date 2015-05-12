@@ -44,6 +44,7 @@ bool Triangle::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
 		t_hit = t;
 		localGeo.pos = p;
 		localGeo.normal = Vec::normalize((tmp < -EPS) ? norm : -1 * norm);
+		localGeo.material = material;
 		return true;
 	}
 	return false;
@@ -88,14 +89,4 @@ bool Triangle::intersectWithLight(const Ray& ray)
 		return true;
 	}
 	return false;
-}
-
-BRDF* Triangle::getBRDF(const LocalGeometry& localGeo)
-{
-	return brdf;
-}
-
-void Triangle::setBRDF(BRDF* brdf_)
-{
-	brdf = brdf_;
 }

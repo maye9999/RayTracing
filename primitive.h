@@ -6,13 +6,17 @@
 class Primitive
 {
 public:
-	Primitive()	{brdf = nullptr;}
+	Primitive()	{brdf = nullptr; material = nullptr;}
 	virtual ~Primitive() {}
 	virtual bool intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo) = 0;
 	virtual bool intersectWithLight(const Ray& ray) = 0;
-	virtual BRDF* getBRDF(const LocalGeometry& localGeo) = 0;
-	virtual void setBRDF(BRDF* brdf_) = 0;
+
+	virtual BRDF* getBRDF() {return brdf;}
+	virtual void setBRDF(BRDF* brdf_) {brdf = brdf_;}
+	virtual void setMaterial(Material* material_) {material = material_;}
+	virtual Material* getMaterial() {return material;}
 protected:
+	Material* material;
 	BRDF* brdf;
 };
 
@@ -22,8 +26,6 @@ public:
 	Triangle(const Point& a, const Point& b, const Point& c) : Primitive(), a(a), b(b), c(c) {}
 	virtual bool intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo);
 	virtual bool intersectWithLight(const Ray& ray);
-	virtual BRDF* getBRDF(const LocalGeometry& localGeo);
-	virtual void setBRDF(BRDF* brdf_);
 private:
 	Point a, b, c;
 };
@@ -35,8 +37,6 @@ public:
 	Sphere(const Point& center_, double radius_) : Primitive(), center(center_), radius(radius_) {}
 	virtual bool intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo);
 	virtual bool intersectWithLight(const Ray& ray);
-	virtual BRDF* getBRDF(const LocalGeometry& localGeo);
-	virtual void setBRDF(BRDF* brdf_);
 private:
 	Point center;
 	double radius;
