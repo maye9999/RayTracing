@@ -9,6 +9,8 @@ struct Vec
 	Vec(double xx = 0, double yy = 0, double zz = 0) : x(xx), y(yy), z(zz) {}
 	double x, y, z;
 
+	bool notZero() const;
+
 	// Static Function
 	static Vec normalize(const Vec& vec);
 	static const Vec cross(const Vec& lhs, const Vec& rhs);
@@ -94,6 +96,11 @@ inline const Vec Vec::cross(const Vec& lhs, const Vec& rhs)
 inline const Vec Vec::mul(const Vec& lhs, const Vec& rhs)
 {
 	return Vec(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
+}
+
+inline bool Vec::notZero() const
+{
+	return (x > 1E-6) || (y > 1E-6) || (z > 1E-6);
 }
 
 #endif	// __VEC_H_

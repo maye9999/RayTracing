@@ -13,7 +13,7 @@ bool Sphere::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
 	if (diff < -EPS)
 	{
 		// Inside Sphere
-		cerr << "In Sphere" << endl;
+		//cerr << "In Sphere" << endl;
 		double tp = l * ray.direction;
 		double d_sqre = l * l - tp * tp;
 		assert(radius * radius - d_sqre > -EPS);

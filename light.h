@@ -10,7 +10,7 @@ public:
 	void generateLightRay(const LocalGeometry& localGeo, Ray& light_ray, Color& color)
 	{
 		light_ray.direction = Vec::normalize(pos - localGeo.pos);
-		light_ray.start_position = localGeo.pos + 1E-5f * light_ray.direction;
+		light_ray.start_position = localGeo.pos + 1E-5 * light_ray.direction;
 		light_ray.t_max = sqrt((pos - localGeo.pos) * (pos - localGeo.pos));
 		color = this->color;
 	}

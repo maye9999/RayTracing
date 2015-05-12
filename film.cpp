@@ -38,6 +38,6 @@ void Film::writeImage()
 	Mat image(mat);
 	namedWindow( "image", CV_WINDOW_AUTOSIZE );
 	imshow( "image", image );
-	imwrite("output.jpg", mat);
+	imwrite("output.png", mat);
 	waitKey(0);
 }

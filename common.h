@@ -10,7 +10,7 @@
 
 #define T_MAX INT_MAX
 const double PI = 3.141592654;
-const double EPS = 1e-5;
+const double EPS = 1e-6;
 
 typedef Vec Normal;
 typedef Vec Point;
@@ -33,10 +33,13 @@ struct Material
 	Vec reflect;
 	Vec refract;
 	double n;
+	double refract_index;
 
 	Material() {}
-	Material(const Vec& ambient, const Vec& diffuse, const Vec& specular, double n, Vec reflect, Vec refract)
-		: ambient(ambient), diffuse(diffuse), specular(specular), n(n), reflect(reflect), refract(refract) {}
+	Material(const Vec& ambient, const Vec& diffuse, const Vec& specular, double n,
+			Vec reflect = Vec(0, 0, 0), Vec refract = Vec(0, 0, 0), double refract_index = 0.0)
+		: ambient(ambient), diffuse(diffuse), specular(specular), n(n),
+		reflect(reflect), refract(refract), refract_index(refract_index) {}
 };
 
 /************************************************************************/
@@ -105,7 +108,7 @@ struct Camera
 struct RayTracer
 {
 	RayTracer(Scene* s) : scene(s) {}
-	void tarce(const Ray& ray, int depth, Color& color);
+	void trace(const Ray& ray, int depth, Color& color, bool refracted);
 	Scene* scene;
 };
 

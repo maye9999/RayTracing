@@ -13,7 +13,7 @@ void Scene::render()
 	{
 		camera.generateRay(sample, ray);
 		color = Color(0, 0, 0);
-		ray_tracer.tarce(ray, 0, color);
+		ray_tracer.trace(ray, 0, color, false);
 		film.commit(sample, color);
 	}
 	film.writeImage();
