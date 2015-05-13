@@ -124,11 +124,21 @@ private:
 	int height, width;
 };
 
+class File
+{
+public:
+	virtual void parse(std::vector<Primitive*>& objects) = 0;
+};
+
 class Scene
 {
 public:
 	Scene(int width, int height);
 	void render();
+
+	void loadFile(File* f)	{f->parse(objects);}
+	void setGlobalMaterial(Material* material);
+	void setGlobalBRDF(BRDF* brdf);
 
 	std::vector<Primitive*> objects;
 	std::vector<Light*> light_objects;
@@ -142,7 +152,5 @@ private:
 	Ray ray;
 	Color color;
 };
-
-
 
 #endif

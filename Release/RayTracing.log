@@ -1,30 +1,21 @@
-﻿生成启动时间为 2015/5/12 22:30:03。
+﻿生成启动时间为 2015/5/14 1:30:05。
      1>项目“E:\MaYe\THU\Study\Sophomore_2\Computer_Graphics\HW\RayTracing\RayTracing.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ID:\OpenCV\opencv\build\include /Zi /nologo /W3 /WX- /O2 /Oi /Ot /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt camera.cpp film.cpp phong.cpp raytracer.cpp sampler.cpp scene.cpp sphere.cpp test.cpp triangle.cpp
-         camera.cpp
-         film.cpp
-     1>film.cpp(14): warning C4244: “初始化”: 从“const double”转换到“int”，可能丢失数据
-     1>film.cpp(15): warning C4244: “初始化”: 从“const double”转换到“int”，可能丢失数据
-     1>film.cpp(21): warning C4244: “=”: 从“const double”转换到“int”，可能丢失数据
-     1>film.cpp(22): warning C4244: “=”: 从“const double”转换到“int”，可能丢失数据
-     1>film.cpp(23): warning C4244: “=”: 从“const double”转换到“int”，可能丢失数据
-         phong.cpp
-         raytracer.cpp
-         sampler.cpp
-         scene.cpp
-         sphere.cpp
-         test.cpp
-         triangle.cpp
+         D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ID:\OpenCV\opencv\build\include /Zi /nologo /W3 /WX- /O2 /Oi /Ot /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt test2.cpp
+         test2.cpp
        Link:
          D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\MaYe\THU\Study\Sophomore_2\Computer_Graphics\HW\RayTracing\Release\RayTracing.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:D:\OpenCV\opencv\build\x86\vc11\lib opencv_contrib2411.lib opencv_core2411.lib opencv_features2d2411.lib opencv_gpu2411.lib opencv_highgui2411.lib opencv_legacy2411.lib opencv_imgproc2411.lib opencv_photo2411.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\MaYe\THU\Study\Sophomore_2\Computer_Graphics\HW\RayTracing\Release\RayTracing.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\MaYe\THU\Study\Sophomore_2\Computer_Graphics\HW\RayTracing\Release\RayTracing.lib" /MACHINE:X86 /SAFESEH Release\camera.obj
          Release\film.obj
+         Release\objfile.obj
          Release\phong.obj
          Release\raytracer.obj
          Release\sampler.obj
          Release\scene.obj
+         Release\SimpleObject.obj
+         Release\Vec3f.obj
          Release\sphere.obj
          Release\test.obj
+         Release\test2.obj
          Release\triangle.obj
          正在生成代码
          已完成代码的生成
@@ -33,4 +24,4 @@
 
 生成成功。
 
-已用时间 00:00:08.50
+已用时间 00:00:04.71

@@ -8,9 +8,9 @@
 
 using namespace std;
 
-int main()
+int mainn()
 {
-	Scene scene(1280, 960);
+	Scene scene(1920, 1080);
 	BRDF *brdf = new PhongBRDF;
 	Material * material_blue = new Material(Vec(0, 0, 0.1), Vec(0, 0, 0.5), Vec(0.2, 0.2, 0.2), 50, Vec(0, 0, 0), Vec(0, 0, 0));
 	Material * material_red = new Material(Vec(0, 0, 0), Vec(0.1, 0.1, 0.1), Vec(0.1, 0.1, 0.1), 50, Vec(0.8, 0.8, 0.8), Vec(0, 0, 0));
@@ -59,14 +59,14 @@ int main()
 	PointLight light(Point(2, 2, 5), Color(0.5, 0.5, 0.5));
 	PointLight light2(Point(8.5, 2.5, 1), Color(0.5, 0.5, 0.5));
 
-	scene.objects.insert(scene.objects.end(), &t1);
-	scene.objects.insert(scene.objects.end(), &t2);
+	//scene.objects.insert(scene.objects.end(), &t1);
+	//scene.objects.insert(scene.objects.end(), &t2);
 	scene.objects.insert(scene.objects.end(), &t3);
 	scene.objects.insert(scene.objects.end(), &t4);
 	scene.objects.insert(scene.objects.end(), &t5);
 	scene.objects.insert(scene.objects.end(), &t6);
-	scene.objects.insert(scene.objects.end(), &t8);
-	scene.objects.insert(scene.objects.end(), &t7);
+	//scene.objects.insert(scene.objects.end(), &t8);
+	//scene.objects.insert(scene.objects.end(), &t7);
 	scene.objects.insert(scene.objects.end(), &s1);
 	scene.objects.insert(scene.objects.end(), &s2);
 
