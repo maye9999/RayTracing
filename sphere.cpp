@@ -24,6 +24,7 @@ bool Sphere::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
 			localGeo.pos = ray.start_position + t_hit * ray.direction;
 			localGeo.normal = Vec::normalize(center - localGeo.pos);
 			localGeo.material = material;
+			localGeo.inside = true;
 			return true;
 		} 
 		else
@@ -45,6 +46,7 @@ bool Sphere::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
 			localGeo.pos = ray.start_position + t_hit * ray.direction;
 			localGeo.normal = Vec::normalize(localGeo.pos - center);
 			localGeo.material = material;
+			localGeo.inside = false;
 			return true;
 		} 
 		else

@@ -59,6 +59,7 @@ struct LocalGeometry
 	Point pos;
 	Normal normal;
 	Material* material;
+	bool inside;
 };
 
 class Light
@@ -108,18 +109,19 @@ struct Camera
 struct RayTracer
 {
 	RayTracer(Scene* s) : scene(s) {}
-	void trace(const Ray& ray, int depth, Color& color, bool refracted);
+	void trace(const Ray& ray, int depth, Color& color);
 	Scene* scene;
 };
 
 class Film
 {
 public:
-	Film(int width, int height);
+	Film(int width, int height, bool super_sampling);
 	void commit(const Sample& sample, const Color& color);
 	void writeImage();
 
 private:
+	bool super_sampling;
 	cv::Mat_<cv::Vec3b> mat;
 	int height, width;
 };
@@ -133,7 +135,7 @@ public:
 class Scene
 {
 public:
-	Scene(int width, int height);
+	Scene(int width, int height, bool super_sampling = false);
 	void render();
 
 	void loadFile(File* f)	{f->parse(objects);}
@@ -151,6 +153,8 @@ private:
 	RayTracer ray_tracer;
 	Ray ray;
 	Color color;
+
+	bool super_sampling;
 };
 
 #endif

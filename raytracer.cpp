@@ -1,11 +1,12 @@
 #include "common.h"
 #include "primitive.h"
+#include "phong.h"
 #include <iostream>
 
 using namespace std;
-void RayTracer::trace(const Ray& ray, int depth, Color& color, bool refracted)
+void RayTracer::trace(const Ray& ray, int depth, Color& color)
 {
-	if (depth >= 5)
+	if (depth >= 20)
 	{
 		return;
 	}
@@ -47,6 +48,7 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color, bool refracted)
 			{
 				// Light can cast to that position
 				color += brdf->compute(localGeo, light_ray, light_color, eye_dir);
+				
 			}
 		}
 		// Reflect
@@ -55,32 +57,46 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color, bool refracted)
 			Ray reflect_ray;
 			Vec reflect_dir = ray.direction - 2.0 * (ray.direction * localGeo.normal) * localGeo.normal;
 			reflect_ray.direction = Vec::normalize(reflect_dir);
-			reflect_ray.start_position = localGeo.pos + 1E-4 * reflect_ray.direction;
+			reflect_ray.start_position = localGeo.pos + 1E-3 * reflect_ray.direction;
 			reflect_ray.t_min = 0;
 			reflect_ray.t_max = T_MAX;
 			
 			Color reflect_color;
-			trace(reflect_ray, depth+1, reflect_color, refracted);
+			trace(reflect_ray, depth+1, reflect_color);
 			color += Vec::mul(localGeo.material->reflect, reflect_color);
 		}
 		// Refract
 		if (localGeo.material->refract.notZero())
 		{
-			double n = (refracted ? localGeo.material->refract_index : 1.0 / localGeo.material->refract_index);
-			double cos_theta_i = -1.0 * ray.direction * localGeo.normal;
+			double n = (localGeo.inside ? localGeo.material->refract_index : 1.0 / localGeo.material->refract_index);
+			double cos_theta_i = ray.direction * localGeo.normal;
 			double tmp = 1.0 - n * n * (1.0 - cos_theta_i * cos_theta_i);
+			//cout << n << endl;
 			if (tmp > -EPS)
 			{
 				Ray refract_ray;
 				double cos_theta_t = sqrt(tmp);
-				refract_ray.direction = n * ray.direction - (n * (ray.direction * localGeo.normal) + cos_theta_t) * localGeo.normal;
+				refract_ray.direction = n * ray.direction - (n * cos_theta_i + cos_theta_t) * localGeo.normal;
 				refract_ray.direction = Vec::normalize(refract_ray.direction);
-				refract_ray.start_position = localGeo.pos + 1E-4 * refract_ray.direction;
+				refract_ray.start_position = localGeo.pos + 1E-3 * refract_ray.direction;
 				refract_ray.t_max = T_MAX;
 				refract_ray.t_min = 0;
 				Color refract_color;
-				trace(refract_ray, depth+1, refract_color, !refracted);
+				trace(refract_ray, depth+1, refract_color);
 				color += Vec::mul(localGeo.material->refract, refract_color);
+			}
+			else
+			{
+				Ray reflect_ray;
+				Vec reflect_dir = ray.direction - 2.0 * (ray.direction * localGeo.normal) * localGeo.normal;
+				reflect_ray.direction = Vec::normalize(reflect_dir);
+				reflect_ray.start_position = localGeo.pos + 1E-3 * reflect_ray.direction;
+				reflect_ray.t_min = 0;
+				reflect_ray.t_max = T_MAX;
+
+				Color reflect_color;
+				trace(reflect_ray, depth+1, reflect_color);
+				color += Vec::mul(localGeo.material->refract, reflect_color);
 			}
 		}
 	}

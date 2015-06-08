@@ -8,9 +8,9 @@
 
 using namespace std;
 
-int mainn()
+int mainnn()
 {
-	Scene scene(1920, 1080);
+	Scene scene(640, 480, false);
 	BRDF *brdf = new PhongBRDF;
 	Material * material_blue = new Material(Vec(0, 0, 0.1), Vec(0, 0, 0.5), Vec(0.2, 0.2, 0.2), 50, Vec(0, 0, 0), Vec(0, 0, 0));
 	Material * material_red = new Material(Vec(0, 0, 0), Vec(0.1, 0.1, 0.1), Vec(0.1, 0.1, 0.1), 50, Vec(0.8, 0.8, 0.8), Vec(0, 0, 0));

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int main()
+int mainn()
 {
 	Scene scene(256, 192);
 	PhongBRDF brdf;

@@ -67,12 +67,12 @@ inline Mat Mat::diag(double a, double b, double c, double d)
 	return Mat(cv::Matx44d::diag(m));
 }
 
-Mat Mat::t() const
+inline Mat Mat::t() const
 {
 	return Mat(mat.t());
 }
 
-Mat Mat::inv() const
+inline Mat Mat::inv() const
 {
 	return Mat(mat.inv());
 }
