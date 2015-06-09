@@ -14,9 +14,18 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color)
 	double t = T_MAX;
 	LocalGeometry localGeo;
 	BRDF *brdf;
+	Color texture_color(1.0, 1.0, 1.0);
 	for(auto i : scene->objects)
 	{
-		if(i->intersect(ray, t, localGeo))
+		if(i->hasTexture())
+		{
+			if(i->intersect(ray, t, localGeo, &texture_color))
+			{
+				is_intersect = true;
+				brdf = i->getBRDF();
+			}
+		}
+		else if(i->intersect(ray, t, localGeo, nullptr))
 		{
 			is_intersect = true;
 			brdf = i->getBRDF();
@@ -99,5 +108,6 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color)
 				color += Vec::mul(localGeo.material->refract, reflect_color);
 			}
 		}
+		color = Vec::mul(color, texture_color);
 	}
 }

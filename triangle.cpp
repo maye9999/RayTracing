@@ -5,7 +5,7 @@
 #include <iostream>
 
 using namespace std;
-bool Triangle::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
+bool Triangle::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo, Color* color)
 {
 	Vec direction = ray.direction;
 	Point pos = ray.start_position;
@@ -45,6 +45,19 @@ bool Triangle::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
 		localGeo.pos = p;
 		localGeo.normal = Vec::normalize((tmp < -EPS) ? norm : -1 * norm);
 		localGeo.material = material;
+		if (color)
+		{
+			double alpha = 1.0 - beta - gamma;
+			double x = alpha * texture_mapping.ut.first +
+				beta * texture_mapping.vt.first +
+				gamma * texture_mapping.wt.first;
+			double y = alpha * texture_mapping.ut.second +
+				beta * texture_mapping.vt.second +
+				gamma * texture_mapping.wt.second;
+			color->x = texture->mat(int(y * texture->height), int(x * texture->width))[2] / 255.0;
+			color->y = texture->mat(int(y * texture->height), int(x * texture->width))[1] / 255.0;
+			color->z = texture->mat(int(y * texture->height), int(x * texture->width))[0] / 255.0;
+		}
 		return true;
 	}
 	return false;

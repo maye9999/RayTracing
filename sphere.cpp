@@ -6,7 +6,7 @@
 
 using namespace std;
 
-bool Sphere::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo)
+bool Sphere::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo, Color* color)
 {
 	Vec l = center - ray.start_position;
 	double diff = l * l - radius * radius;

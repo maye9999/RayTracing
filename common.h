@@ -6,6 +6,7 @@
 #include <climits>
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <vector>
 
 #define T_MAX INT_MAX
@@ -25,6 +26,18 @@ struct Sample
 	Sample(double x, double y) : x(x), y(y) {}
 };
 
+struct Texture
+{
+	cv::Mat_<cv::Vec3b> mat;
+	int width, height;
+	Texture(std::string file_name)
+	{
+		mat = cv::imread(file_name);
+		width = mat.cols;
+		height = mat.cols;
+	}
+};
+
 struct Material
 {
 	Vec ambient;
@@ -37,7 +50,7 @@ struct Material
 
 	Material() {}
 	Material(const Vec& ambient, const Vec& diffuse, const Vec& specular, double n,
-			Vec reflect = Vec(0, 0, 0), Vec refract = Vec(0, 0, 0), double refract_index = 0.0)
+			Vec reflect = Vec(0, 0, 0), Vec refract = Vec(0, 0, 0), double refract_index = 0.0, Texture* texture = nullptr)
 		: ambient(ambient), diffuse(diffuse), specular(specular), n(n),
 		reflect(reflect), refract(refract), refract_index(refract_index) {}
 };
