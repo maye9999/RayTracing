@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int mainnnn()
+int mainnn()
 {
 	Scene scene(1920, 1440, true);
 	//Scene scene(640, 480, false);

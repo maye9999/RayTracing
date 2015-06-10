@@ -4,13 +4,14 @@
 #include "common.h"
 #include "SimpleOBJ/SimpleObject.h"
 
-class ObjFile : public File, private SimpleOBJ::CSimpleObject
+class ObjFile : public File
 {
 public:
 	ObjFile(const char* name);
-	virtual void parse(std::vector<Primitive*>& objects);
+	virtual bool parse(std::vector<Primitive*>& objects);
 
 private:
+	std::string file_name;
 };
 
 #endif

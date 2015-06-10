@@ -92,7 +92,6 @@
     <ClInclude Include="phong.h" />
     <ClInclude Include="primitive.h" />
     <ClInclude Include="SimpleOBJ\SimpleObject.h" />
-    <ClInclude Include="SimpleOBJ\Vec3f.h" />
     <ClInclude Include="vec.h" />
   </ItemGroup>
   <ItemGroup>
@@ -103,7 +102,6 @@
     <ClCompile Include="raytracer.cpp" />
     <ClCompile Include="sampler.cpp" />
     <ClCompile Include="scene.cpp" />
-    <ClCompile Include="SimpleOBJ\SimpleObject.cpp" />
     <ClCompile Include="SimpleOBJ\Vec3f.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="test.cpp" />

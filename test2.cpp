@@ -9,35 +9,27 @@ using namespace std;
 
 int main()
 {
-	Scene scene(1920, 1440, true);
+	Scene scene(800, 600, false);
 
 	PhongBRDF brdf;
-	Material material(Vec(0.1, 0.1, 0.1), Vec(0.4, 0.4, 0.4), Vec(0.2, 0.2, 0.2), 20);
+	Material material(Vec(1, 1, 1), Vec(0.2, 0.2, 0.2), Vec(0.2, 0.2, 0.2), 20);
 
-	Triangle t1(Point(0, 0, 0), Point(0, 1, 0), Point(1, 1, 0));
-	Triangle t2(Point(0, 0, 0), Point(1, 0, 0), Point(1, 1, 0));
-	
-	Texture texture("floor.bmp");
-	TextureMapping tm;
-	tm.ut = make_pair<double, double>(0, 1);
-	tm.vt = make_pair<double, double>(0, 0);
-	tm.wt = make_pair<double, double>(1, 0);
-	TextureMapping tm2;
-	tm2.ut = make_pair<double, double>(0, 1);
-	tm2.vt = make_pair<double, double>(1, 1);
-	tm2.wt = make_pair<double, double>(1, 0);
-	t1.setTexture(&texture);
-	t1.setTextureMapping(tm);
-	t2.setTexture(&texture);
-	t2.setTextureMapping(tm2);
-	scene.objects.push_back(&t1);
-	scene.objects.push_back(&t2);
+	ObjFile* file = new ObjFile("box.obj");
+	if(!scene.loadFile(file))
+	{
+		return -1;
+	}
 	scene.setGlobalBRDF(&brdf);
-	scene.setGlobalMaterial(&material);	
+	scene.setGlobalMaterial(&material);
 
-	PointLight light(Point(1, 1, 6), Color(0.9, 0.9, 0.9));
-	scene.light_objects.insert(scene.light_objects.end(), &light);
-	scene.camera.setCamera(Point(-1, -1, 3), Point(0.5, 0.5, 0), Vec(0, 1, 0), 30);
+	PointLight light(Point(50, 50, 20), Color(0.9, 0.9, 0.9));
+	PointLight light2(Point(50, 20, 20), Color(0.9, 0.9, 0.9));
+	PointLight light3(Point(20, 50, 20), Color(0.9, 0.9, 0.9));
+	scene.light_objects.push_back(&light);
+	scene.light_objects.push_back(&light2);
+	scene.light_objects.push_back(&light3);
+	
+	scene.camera.setCamera(Point(-5, -5, 5), Point(0, 0, 0), Vec(0, 0, 1), 45);
 	scene.render();
 	return 0;
 }

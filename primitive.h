@@ -24,6 +24,8 @@ public:
 	virtual void setTextureMapping(const TextureMapping& texture_mapping) {this->texture_mapping = texture_mapping;}
 
 	bool hasTexture() {return texture != nullptr;}
+
+	virtual void print() = 0;
 protected:
 	Material* material;
 	BRDF* brdf;
@@ -34,11 +36,15 @@ protected:
 class Triangle : public Primitive
 {
 public:
-	Triangle(const Point& a, const Point& b, const Point& c) : Primitive(), a(a), b(b), c(c) {}
+	Triangle(const Point& a, const Point& b, const Point& c) : Primitive(), a(a), b(b), c(c), given_normal(false) {}
+	Triangle(const Point& a, const Point& b, const Point& c, const Vec& n) : Primitive(), a(a), b(b), c(c), normal(n), given_normal(true) {}
 	virtual bool intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo, Color* color);
 	virtual bool intersectWithLight(const Ray& ray);
+	virtual void print();
 private:
 	Point a, b, c;
+	Vec normal;
+	bool given_normal;
 };
 
 
@@ -48,6 +54,7 @@ public:
 	Sphere(const Point& center_, double radius_) : Primitive(), center(center_), radius(radius_) {}
 	virtual bool intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo, Color* color);
 	virtual bool intersectWithLight(const Ray& ray);
+	virtual void print();
 private:
 	Point center;
 	double radius;

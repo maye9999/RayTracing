@@ -142,7 +142,7 @@ private:
 class File
 {
 public:
-	virtual void parse(std::vector<Primitive*>& objects) = 0;
+	virtual bool parse(std::vector<Primitive*>& objects) = 0;
 };
 
 class Scene
@@ -151,7 +151,7 @@ public:
 	Scene(int width, int height, bool super_sampling = false);
 	void render();
 
-	void loadFile(File* f)	{f->parse(objects);}
+	bool loadFile(File* f)	{return f->parse(objects);}
 	void setGlobalMaterial(Material* material);
 	void setGlobalBRDF(BRDF* brdf);
 

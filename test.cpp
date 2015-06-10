@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int mainnn()
+int mainn()
 {
 	Scene scene(640, 480, false);
 	BRDF *brdf = new PhongBRDF;
@@ -59,14 +59,14 @@ int mainnn()
 	PointLight light(Point(2, 2, 5), Color(0.5, 0.5, 0.5));
 	PointLight light2(Point(8.5, 2.5, 1), Color(0.5, 0.5, 0.5));
 
-	//scene.objects.insert(scene.objects.end(), &t1);
-	//scene.objects.insert(scene.objects.end(), &t2);
+	scene.objects.insert(scene.objects.end(), &t1);
+	scene.objects.insert(scene.objects.end(), &t2);
 	scene.objects.insert(scene.objects.end(), &t3);
 	scene.objects.insert(scene.objects.end(), &t4);
 	scene.objects.insert(scene.objects.end(), &t5);
 	scene.objects.insert(scene.objects.end(), &t6);
-	//scene.objects.insert(scene.objects.end(), &t8);
-	//scene.objects.insert(scene.objects.end(), &t7);
+	scene.objects.insert(scene.objects.end(), &t8);
+	scene.objects.insert(scene.objects.end(), &t7);
 	scene.objects.insert(scene.objects.end(), &s1);
 	scene.objects.insert(scene.objects.end(), &s2);
 

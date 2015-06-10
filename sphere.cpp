@@ -106,3 +106,8 @@ bool Sphere::intersectWithLight(const Ray& ray)
 		return true;
 	}
 }
+
+void Sphere::print()
+{
+	printf("Sphere: (%lf %lf %lf) %lf\n", center.x, center.y, center.z, radius);
+}

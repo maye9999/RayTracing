@@ -42,9 +42,6 @@
     <ClCompile Include="phong.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleOBJ\SimpleObject.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleOBJ\Vec3f.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="SimpleOBJ\SimpleObject.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleOBJ\Vec3f.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="objfile.h">
