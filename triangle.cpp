@@ -76,6 +76,10 @@ bool Triangle::intersect(const Ray& ray, double& t_hit, LocalGeometry& localGeo,
 				beta * texture_mapping.vt.second +
 				gamma * texture_mapping.wt.second;
 			y = 1.0 - y;
+			assert(x < 1.0);
+			assert(y < 1.0);
+			assert(x > 0.0);
+			assert(y > 0.0);
 			color->x = texture->mat(int(y * texture->height), int(x * texture->width))[2] / 255.0;
 			color->y = texture->mat(int(y * texture->height), int(x * texture->width))[1] / 255.0;
 			color->z = texture->mat(int(y * texture->height), int(x * texture->width))[0] / 255.0;

@@ -8,6 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <vector>
+#include <mutex>
 
 #define T_MAX INT_MAX
 const double PI = 3.141592654;
@@ -137,6 +138,8 @@ private:
 	bool super_sampling;
 	cv::Mat_<cv::Vec3b> mat;
 	int height, width;
+
+	std::mutex m_mutex;
 };
 
 class File
@@ -149,11 +152,13 @@ class Scene
 {
 public:
 	Scene(int width, int height, bool super_sampling = false);
-	void render();
+	void render(int cores = 1);
 
 	bool loadFile(File* f)	{return f->parse(objects);}
 	void setGlobalMaterial(Material* material);
 	void setGlobalBRDF(BRDF* brdf);
+
+	void renderPartial(std::pair<double, double> p);
 
 	std::vector<Primitive*> objects;
 	std::vector<Light*> light_objects;
@@ -161,13 +166,13 @@ public:
 private:
 	Film film;
 	Sample sample;
-	Sampler sampler;
 	
 	RayTracer ray_tracer;
-	Ray ray;
-	Color color;
 
 	bool super_sampling;
+	int width, height;
+	std::mutex m;
+	
 };
 
 #endif

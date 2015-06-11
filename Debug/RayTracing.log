@@ -1,4 +1,4 @@
-﻿生成启动时间为 2015/6/10 19:39:19。
+﻿生成启动时间为 2015/6/11 21:04:28。
      1>项目“E:\MaYe\THU\Study\Sophomore_2\Computer_Graphics\HW\RayTracing\RayTracing.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ID:\OpenCV\opencv\build\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt test2.cpp
@@ -22,4 +22,4 @@
 
 生成成功。
 
-已用时间 00:00:03.09
+已用时间 00:00:07.67

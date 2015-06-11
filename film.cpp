@@ -11,6 +11,7 @@ Film::Film(int width, int height, bool super_sampling)
 
 void Film::commit(const Sample& sample, const Color& color)
 {
+
 	int x = sample.x - 0.5;
 	int y = sample.y - 0.5;
 
@@ -27,10 +28,11 @@ void Film::commit(const Sample& sample, const Color& color)
 		cy = 255;
 	if(cz > 255)
 		cz = 255;
-
+	//m_mutex.lock();
 	mat(height - 1 - y, x)[0] = cz;
 	mat(height - 1 - y, x)[1] = cy;
 	mat(height - 1 - y, x)[2] = cx;
+	//m_mutex.unlock();
 }
 
 void Film::writeImage()
