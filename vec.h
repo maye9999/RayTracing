@@ -84,8 +84,19 @@ inline Vec& Vec::operator-=(const Vec& vec)
 
 inline Vec Vec::normalize(const Vec& vec)
 {
+	const double EPS = 1E-6;
+	Vec ret(0, 0, 0);
 	double sum = sqrt(vec * vec);
-	return Vec(vec.x / sum, vec.y / sum, vec.z / sum);
+	if(fabs(sum) < EPS)
+		return ret;
+	ret = Vec(vec.x / sum, vec.y / sum, vec.z / sum);
+	if(fabs(ret.x) < EPS)
+		ret.x += EPS;
+	if(fabs(ret.y) < EPS)
+		ret.y += EPS;
+	if(fabs(ret.z) < EPS)
+		ret.z += EPS;
+	return ret;
 }
 
 inline const Vec Vec::cross(const Vec& lhs, const Vec& rhs)

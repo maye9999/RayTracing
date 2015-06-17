@@ -20,6 +20,7 @@ typedef Vec Color;
 
 class Scene;
 class Primitive;
+class KDTree;
 
 struct Sample
 {
@@ -122,9 +123,10 @@ struct Camera
 
 struct RayTracer
 {
-	RayTracer(Scene* s) : scene(s) {}
+	RayTracer(Scene* s, KDTree* k) : scene(s), kd_tree(k) {}
 	void trace(const Ray& ray, int depth, Color& color);
 	Scene* scene;
+	KDTree* kd_tree;
 };
 
 class Film
@@ -152,7 +154,7 @@ class Scene
 {
 public:
 	Scene(int width, int height, bool super_sampling = false);
-	void render(int cores = 1);
+	void render(int cores = 1, bool use_kd_tree = false);
 
 	bool loadFile(File* f)	{return f->parse(objects);}
 	void setGlobalMaterial(Material* material);
@@ -166,8 +168,9 @@ public:
 private:
 	Film film;
 	Sample sample;
-	
+	KDTree* kd_tree;
 	RayTracer ray_tracer;
+	
 
 	bool super_sampling;
 	int width, height;

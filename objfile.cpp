@@ -5,7 +5,7 @@ using namespace std;
 
 
 ObjFile::ObjFile(const char* name)
-	: file_name(name)
+	: file_name(name), texture(nullptr)
 {
 
 }
@@ -19,15 +19,11 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 		return false;
 	}
 	char buf[256];
-	char texture_name[256];
 	vector<Point> vecVertices;
 	vector<pair<double, double> > vecTextureVertices;
 	vector<Normal> vecNormals;
-	vecVertices.clear();
-	vecTextureVertices.clear();
-	objects.clear();
+	Material* material = nullptr;
 	int lineNumber = 0;
-	Texture *texture = nullptr;
 	while(fscanf(fp, "%s", buf) != EOF)
 	{
 		lineNumber ++;
@@ -117,6 +113,8 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 						fscanf(fp, "%d//%d", &c, &n) ==2)
 					{
 						Triangle *t = new Triangle(vecVertices[a-1], vecVertices[b-1], vecVertices[c-1]);
+						if(material)
+							t->setMaterial(material);
 						objects.push_back(t);
 					}
 					else
@@ -131,8 +129,6 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 					if( fscanf(fp, "%d/%d/%d", &b, &tb, &n) ==3 &&
 						fscanf(fp, "%d/%d/%d", &c, &tc, &n) ==3 )
 					{
-						// TODO:
-						// CHANGE FILE NAME
 						Triangle *t = new Triangle(vecVertices[a-1], vecVertices[b-1], vecVertices[c-1]);
 						t->setTexture(texture);
 						TextureMapping tm;
@@ -140,6 +136,8 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 						tm.vt = vecTextureVertices[tb-1];
 						tm.wt = vecTextureVertices[tc-1];
 						t->setTextureMapping(tm);
+						if(material)
+							t->setMaterial(material);
 						objects.push_back(t);
 						int d, td;
 						if(fscanf(fp, "%d/%d/%d", &d, &td, &n) == 3)
@@ -151,6 +149,8 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 							tm.vt = vecTextureVertices[tc-1];
 							tm.wt = vecTextureVertices[td-1];
 							t->setTextureMapping(tm);
+							if(material)
+								t->setMaterial(material);
 							objects.push_back(t);
 						}
 					}
@@ -173,6 +173,8 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 						tm.vt = vecTextureVertices[tb-1];
 						tm.wt = vecTextureVertices[tc-1];
 						t->setTextureMapping(tm);
+						if(material)
+							t->setMaterial(material);
 						objects.push_back(t);
 
 						int d, td;
@@ -185,6 +187,8 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 							tm.vt = vecTextureVertices[tc-1];
 							tm.wt = vecTextureVertices[td-1];
 							t->setTextureMapping(tm);
+							if(material)
+								t->setMaterial(material);
 							objects.push_back(t);
 						}
 
@@ -203,12 +207,16 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 						fscanf(fp, "%d", &c)  ==1 )
 					{
 						Triangle *t = new Triangle(vecVertices[a-1], vecVertices[b-1], vecVertices[c-1]);
+						if(material)
+							t->setMaterial(material);
 						objects.push_back(t);
 
 						int d;
 						if(fscanf(fp, "%d", &d) == 1)
 						{
 							Triangle *t = new Triangle(vecVertices[a-1], vecVertices[c-1], vecVertices[d-1]);
+							if(material)
+								t->setMaterial(material);
 							objects.push_back(t);
 						}
 					}
@@ -225,13 +233,32 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 			{
 				if(buf[1] == 's' && buf[2] == 'e' && buf[3] == 'm' && buf[4] == 't' && buf[5] == 'l')
 				{
-					fscanf(fp, "%s", texture_name);
-					texture = new Texture(texture_name);
-					printf("Using Texture: %s\n", texture_name);
+					char mtl_name[256];
+					fscanf(fp, "%s", mtl_name);
+					try
+					{
+						material = materials[mtl_name];
+						printf("Material: %s\n", mtl_name);
+					}
+					catch(exception& e)
+					{
+						printf("Material %s Doesn't Exist!\n", mtl_name);
+					}
 				}
 			}
 			break;
 
+		case 'm':
+			{
+				if(strcmp(buf, "mtllib") == 0)
+				{
+					char mtl_name[256];
+					fscanf(fp, "%s", mtl_name);
+					if(!parseMTLFile(mtl_name))
+						return false;
+				}
+			}
+			break;
 
 		default:
 			/* eat up rest of line */
@@ -244,5 +271,153 @@ bool ObjFile::parse(std::vector<Primitive*>& objects)
 	printf("Vertex Number = %d\n",vecVertices.size());
 	printf("Triangle Number = %d\n",objects.size());
 	fclose(fp);
+	return true;
+}
+
+bool ObjFile::parseMTLFile(const char* name)
+{
+	FILE* fp = fopen(name, "r");
+	if(fp==NULL)
+	{
+		printf("Error: Loading %s failed.\n",file_name.c_str());
+		return false;
+	}
+	char buf[256];
+	int lineNumber = 0;
+	Material* m = nullptr;
+	char m_name[256];
+	while(fscanf(fp, "%s", buf) != EOF)
+	{
+		lineNumber ++;
+		switch(buf[0])
+		{
+		case '#':				/* comment */
+			/* eat up rest of line */
+			fgets(buf, sizeof(buf), fp);
+			break;
+		case 'n':
+			{
+				if(strcmp(buf, "newmtl") == 0)
+				{
+					if (m)
+					{
+						materials[m_name] = m;
+					}
+					fscanf(fp, "%s", m_name);
+					m = new Material;
+				}
+				else
+				{
+					fgets(buf, sizeof(buf), fp);
+				}
+			}
+			break;
+
+		case 'K':
+			{
+				switch (buf[1])
+				{
+				case 'a':
+					{
+						Color c;
+						if(fscanf(fp, "%lf %lf %lf", &c.x, &c.y, &c.z)==3)
+						{
+							m->ambient = c;
+						}
+						else
+						{
+							printf("Error: Wrong Material at Line %d\n",lineNumber);
+							return false;
+						}
+					}
+					break;
+				case 'd':
+					{
+						Color c;
+						if(fscanf(fp, "%lf %lf %lf", &c.x, &c.y, &c.z)==3)
+						{
+							m->diffuse = c;
+						}
+						else
+						{
+							printf("Error: Wrong Material at Line %d\n",lineNumber);
+							return false;
+						}
+					}
+					break;
+				case 's':
+					{
+						Color c;
+						if(fscanf(fp, "%lf %lf %lf", &c.x, &c.y, &c.z)==3)
+						{
+							m->specular = c;
+						}
+						else
+						{
+							printf("Error: Wrong Material at Line %d\n",lineNumber);
+							return false;
+						}
+					}
+					break;
+				default:
+					printf("Ignoring argument: %s\n", buf);
+					fgets(buf, sizeof(buf), fp);
+					break;
+				}
+			}
+			break;
+
+		case 'N':
+			{
+				if(buf[1] == 's')
+				{
+					fscanf(fp, "%lf", &m->n);
+				}
+				else
+				{
+					printf("Ignoring argument: %s\n", buf);
+					fgets(buf, sizeof(buf), fp);
+				}
+			}
+			break;
+		case 'i':
+			{
+				if(strcmp(buf, "illum") == 0)
+				{
+					fgets(buf, sizeof(buf), fp);
+				}
+				else
+				{
+					printf("Ignoring argument: %s\n", buf);
+					fgets(buf, sizeof(buf), fp);
+				}
+			}
+			break;
+		case 'm':
+			{
+				if (strcmp(buf, "map_Kd") == 0)
+				{
+					char texture_name[256];
+					fscanf(fp, "%s", texture_name);
+					texture = new Texture(texture_name);
+				} 
+				else
+				{
+					printf("Ignoring argument: %s\n", buf);
+					fgets(buf, sizeof(buf), fp);
+				}
+			}
+			break;
+		default:
+			/* eat up rest of line */
+			printf("Ignoring argument: %s\n", buf);
+			fgets(buf, sizeof(buf), fp);
+			break;
+		}
+	}
+	if (m)
+	{
+		materials[m_name] = m;
+	}
 	return true;
 }

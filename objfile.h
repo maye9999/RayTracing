@@ -12,6 +12,9 @@ public:
 
 private:
 	std::string file_name;
+	std::map<std::string, Material*> materials;
+	Texture* texture;
+	bool parseMTLFile(const char* name);
 };
 
 #endif

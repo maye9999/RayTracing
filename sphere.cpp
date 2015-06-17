@@ -111,3 +111,34 @@ void Sphere::print()
 {
 	printf("Sphere: (%lf %lf %lf) %lf\n", center.x, center.y, center.z, radius);
 }
+
+
+Point Sphere::getXLeft()
+{
+	return center - radius * Point(1.0, 0, 0);
+}
+
+Point Sphere::getXRight()
+{
+	return center + radius * Point(1.0, 0, 0);
+}
+
+Point Sphere::getYLeft()
+{
+	return center - radius * Point(0, 1.0, 0);
+}
+
+Point Sphere::getYRight()
+{
+	return center + radius * Point(0, 1.0, 0);
+}
+
+Point Sphere::getZLeft()
+{
+	return center - radius * Point(0, 0, 1.0);
+}
+
+Point Sphere::getZRight()
+{
+	return center + radius * Point(0, 0, 1.0);
+}

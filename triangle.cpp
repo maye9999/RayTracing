@@ -112,25 +112,17 @@ bool Triangle::intersectWithLight(const Ray& ray)
 		return false;
 	// Now Check whether in Triangle
 	Point p = ray.start_position + ray.direction * t;
-	cv::Matx22d mat;
-	cv::Vec2d aa;
-	if(fabs(b.x - a.x) < EPS && fabs(c.x - a.x) < EPS)
-	{
-		mat = cv::Matx22d((b-a).z, (c-a).z, (b-a).y, (c-a).y);
-		aa = mat.inv() * cv::Vec2d((p-a).z, (p-a).y);
-	}
-	else if(fabs(b.y - a.y) < EPS && fabs(c.y - a.y) < EPS)
-	{
-		mat = cv::Matx22d((b-a).z, (c-a).z, (b-a).x, (c-a).x);
-		aa = mat.inv() * cv::Vec2d((p-a).z, (p-a).x);
-	}
-	else
-	{
-		mat = cv::Matx22d((b-a).x, (c-a).x, (b-a).y, (c-a).y);
-		aa = mat.inv() * cv::Vec2d((p-a).x, (p-a).y);
-	}
-	double beta = aa[0];
-	double gamma = aa[1];
+	cv::Matx33d m1(ray.direction.y, (a - ray.start_position).x, (a-c).x,
+		ray.direction.y, (a - ray.start_position).y, (a-c).y,
+		ray.direction.z, (a - ray.start_position).z, (a-c).z);
+	cv::Matx33d m2(ray.direction.x, (a-b).x, (a - ray.start_position).x,
+		ray.direction.y, (a-b).y, (a - ray.start_position).y,
+		ray.direction.z, (a-b).z, (a - ray.start_position).z);
+	cv::Matx33d m0(ray.direction.x, (a-b).x, (a - c).x,
+		ray.direction.y, (a-b).y, (a - c).y,
+		ray.direction.z, (a-b).z, (a - c).z);
+	double beta = cv::determinant(m1) / cv::determinant(m0);
+	double gamma = cv::determinant(m2) / cv::determinant(m0);
 	if(beta > -EPS && gamma > -EPS && beta + gamma < 1 + EPS)
 	{
 		return true;

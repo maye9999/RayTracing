@@ -1,12 +1,13 @@
 #include "common.h"
 #include "primitive.h"
 #include "phong.h"
+#include "KDTree.h"
 #include <iostream>
 
 using namespace std;
 void RayTracer::trace(const Ray& ray, int depth, Color& color)
 {
-	if (depth >= 20)
+	if (depth >= 5)
 	{
 		return;
 	}
@@ -15,20 +16,27 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color)
 	LocalGeometry localGeo;
 	BRDF *brdf;
 	Color texture_color(1.0, 1.0, 1.0);
-	for(auto i : scene->objects)
+	if (kd_tree != nullptr)
 	{
-		if(i->hasTexture())
+		is_intersect = kd_tree->findNearestPrimitive(kd_tree->_root, ray, t, localGeo, brdf, &texture_color);
+	} 
+	else
+	{
+		for(auto i : scene->objects)
 		{
-			if(i->intersect(ray, t, localGeo, &texture_color))
+			if(i->hasTexture())
+			{
+				if(i->intersect(ray, t, localGeo, &texture_color))
+				{
+					is_intersect = true;
+					brdf = i->getBRDF();
+				}
+			}
+			else if(i->intersect(ray, t, localGeo, nullptr))
 			{
 				is_intersect = true;
 				brdf = i->getBRDF();
 			}
-		}
-		else if(i->intersect(ray, t, localGeo, nullptr))
-		{
-			is_intersect = true;
-			brdf = i->getBRDF();
 		}
 	}
 	if(!is_intersect)
