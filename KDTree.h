@@ -21,9 +21,9 @@ public:
 
 	void buildTree();
 	bool findNearestPrimitive(KDNode* root, const Ray& ray, double& t, LocalGeometry& local_geo, BRDF*& brdf, Color* texture_color);
-
+	bool intersectWithLight(KDNode* root, const Ray& ray);
 	KDNode* _root;
-private:	
+private:
 	std::vector<Primitive*> _objects;
 
 	void divideAndBuild(KDNode* root);	

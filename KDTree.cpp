@@ -18,9 +18,9 @@ void KDTree::buildTree()
 		double t1 = i->getXLeft().x;
 		double tt1 = i->getXRight().x;
 		double t2 = i->getYLeft().y;
-		double tt2 = i->getXRight().y;
+		double tt2 = i->getYRight().y;
 		double t3 = i->getZLeft().z;
-		double tt3 = i->getXRight().z;
+		double tt3 = i->getZRight().z;
 		if(t1 < x_small)
 			x_small = t1;
 		if(tt1 > x_big)
@@ -126,15 +126,7 @@ bool KDTree::findNearestPrimitive(KDNode* root, const Ray& ray, double& t_hit, L
 		bool is_intersect = false;
 		for(auto i : root->objects)
 		{
-			if(i->hasTexture())
-			{
-				if(i->intersect(ray, t_hit, local_geo, texture_color))
-				{
-					is_intersect = true;
-					brdf = i->getBRDF();
-				}
-			}
-			else if(i->intersect(ray, t_hit, local_geo, nullptr))
+			if(i->intersect(ray, t_hit, local_geo, texture_color))
 			{
 				is_intersect = true;
 				brdf = i->getBRDF();
@@ -154,8 +146,40 @@ bool KDTree::findNearestPrimitive(KDNode* root, const Ray& ray, double& t_hit, L
 	return flag1 || flag2;
 }
 
+bool KDTree::intersectWithLight(KDNode* root, const Ray& ray)
+{
+	if (root->objects.size() == 0)
+	{
+		return false;
+	}
+	if(root->objects.size() < 3)
+	{
+		bool is_intersect = false;
+		for(auto i : root->objects)
+		{
+			if(i->intersectWithLight(ray))
+			{
+				is_intersect = true;
+				break;
+			}
+		}
+		return is_intersect;
+	}
+	bool flag1 = false, flag2 = false;
+	if(root->left->intersect(ray, T_MAX))
+	{
+		flag1 = intersectWithLight(root->left, ray);
+	}
+	if(root->right->intersect(ray, T_MAX))
+	{
+		flag2 = intersectWithLight(root->right, ray);
+	}
+	return flag1 || flag2;
+}
+
 bool KDNode::intersect(const Ray& ray, double t_hit)
 {
+	//return true;
 	double x = ray.start_position.x;
 	double y = ray.start_position.y;
 	double z = ray.start_position.z;
@@ -169,7 +193,7 @@ bool KDNode::intersect(const Ray& ray, double t_hit)
 	tzz = (big.z - z) / ray.direction.z;
 	double tmin = max(max(min(tx, txx), min(ty, tyy)), min(tz, tzz));
 	double tmax = min(min(max(tx, txx), max(ty, tyy)), max(tz, tzz));
-	if(tmin < tmax - EPS && tmin < t_hit - EPS)
+	if(tmin <= tmax && tmin < t_hit )
 		return true;
 	return false;
 }

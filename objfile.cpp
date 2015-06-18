@@ -279,7 +279,7 @@ bool ObjFile::parseMTLFile(const char* name)
 	FILE* fp = fopen(name, "r");
 	if(fp==NULL)
 	{
-		printf("Error: Loading %s failed.\n",file_name.c_str());
+		printf("Error: Loading %s failed.\n", name);
 		return false;
 	}
 	char buf[256];

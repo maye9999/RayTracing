@@ -19,20 +19,12 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color)
 	if (kd_tree != nullptr)
 	{
 		is_intersect = kd_tree->findNearestPrimitive(kd_tree->_root, ray, t, localGeo, brdf, &texture_color);
-	} 
+	}
 	else
 	{
 		for(auto i : scene->objects)
 		{
-			if(i->hasTexture())
-			{
-				if(i->intersect(ray, t, localGeo, &texture_color))
-				{
-					is_intersect = true;
-					brdf = i->getBRDF();
-				}
-			}
-			else if(i->intersect(ray, t, localGeo, nullptr))
+			if(i->intersect(ray, t, localGeo, &texture_color))
 			{
 				is_intersect = true;
 				brdf = i->getBRDF();
@@ -53,14 +45,19 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color)
 			Color light_color;
 			i->generateLightRay(localGeo, light_ray, light_color);
 			bool found = false;
-			for(auto j : scene->objects)
+			if(kd_tree != nullptr)
+				found = kd_tree->intersectWithLight(kd_tree->_root, light_ray);
+			else
 			{
-				if(j->intersectWithLight(light_ray))
+				for(auto j : scene->objects)
 				{
-					found = true;
-					break;
+					if(j->intersectWithLight(light_ray))
+					{
+						found = true;
+						break;
+					}
 				}
-			}
+			}			
 			if(!found)
 			{
 				// Light can cast to that position

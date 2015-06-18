@@ -34,6 +34,8 @@ void Scene::renderPartial(pair<double, double> p)
 				break;
 			}
 		}
+// 		if(s.x == 430.5 && s.y == 250.5)
+// 			cout << "tt" << endl;
 		Ray ray;
 		camera.generateRay(s, ray);
 		Color color = Color(0, 0, 0);
@@ -79,38 +81,12 @@ void Scene::render(int cores, bool use_kd_tree)
 		kd_tree = new KDTree(objects);
 		kd_tree->buildTree();
 		ray_tracer.kd_tree = kd_tree;
-	}	
-	if(cores == 1)
-	{
-		renderPartial(make_pair(0.5, width - 0.5));
 	}
-	else if(cores == 2)
-	{
-		thread first(&Scene::renderPartial, this, make_pair(0.5, width/2 - 0.5));
-		thread second(&Scene::renderPartial, this, make_pair(width/2 + 0.5, width - 0.5));
-		first.join();
-		second.join();
-	}
-	else if(cores == 3)
-	{
-		thread first(&Scene::renderPartial, this, make_pair(0.5, width/3 - 0.5));
-		thread second(&Scene::renderPartial, this, make_pair(width/3 + 0.5, width*2/3 - 0.5));
-		thread third(&Scene::renderPartial, this, make_pair(width*2/3 + 0.5, width - 0.5));
-		first.join();
-		second.join();
-		third.join();
-	}
-	else
-	{
-		thread first(&Scene::renderPartial, this, make_pair(0.5, width/4 - 0.5));
-		thread second(&Scene::renderPartial, this, make_pair(width/4 + 0.5, width/2 - 0.5));
-		thread third(&Scene::renderPartial, this, make_pair(width/2 + 0.5, width*3/4 - 0.5));
-		thread fourth(&Scene::renderPartial, this, make_pair(width*3/4 + 0.5, width - 0.5));
-		first.join();
-		second.join();
-		third.join();
-		fourth.join();
-	}
+	thread threads[16];
+	for(int i = 0; i < cores; ++i)
+		threads[i] = thread(&Scene::renderPartial, this, make_pair(width*i/cores + 0.5, width*(i+1)/cores - 0.5));
+	for(int i = 0; i < cores; ++i)
+		threads[i].join();
 	t2 = clock();
 	cout << "Using Time: " << double(t2 - t1) / CLOCKS_PER_SEC << endl;
 	film.writeImage();
