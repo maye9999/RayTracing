@@ -60,8 +60,8 @@ int mainb()
 	s1.setMaterial(material_s1);
 	s2.setMaterial(material_s2);
 
-	PointLight light(Point(10, 10, 15), Color(1, 1, 1));
-	PointLight light2(Point(8.5, 12.5, 0.5), Color(0.5, 0.5, 0.5));
+	PointLight light(&scene, Point(10, 10, 15), Color(1, 1, 1));
+	PointLight light2(&scene, Point(8.5, 12.5, 0.5), Color(0.5, 0.5, 0.5));
 
 	//scene.objects.insert(scene.objects.end(), &t3);
 	//scene.objects.insert(scene.objects.end(), &t4);

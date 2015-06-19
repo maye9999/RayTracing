@@ -33,6 +33,7 @@ void Film::commit(const Sample& sample, const Color& color)
 	mat(height - 1 - y, x)[1] = cy;
 	mat(height - 1 - y, x)[2] = cx;
 	//m_mutex.unlock();
+	//std::cout << cz << " " << cy << " " << cx << std::endl;
 }
 
 void Film::writeImage()

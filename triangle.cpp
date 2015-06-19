@@ -77,14 +77,14 @@ bool Triangle::intersectWithLight(const Ray& ray)
 	Vec direction = ray.direction;
 	Point pos = ray.start_position;
 	Normal norm;
-	if (given_normal)
-	{
-		norm = normal;
-	}
-	else
-	{
+// 	if (given_normal)
+// 	{
+// 		norm = normal;
+// 	}
+// 	else
+// 	{
 		norm = Vec::normalize(Vec::cross(b-a, c-a));
-	}
+/*	}*/
 	double tmp = direction * norm;
 	if (fabs(tmp) < EPS)
 	{

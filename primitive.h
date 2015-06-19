@@ -100,8 +100,8 @@ public:
 	virtual Point getZLeft() {return *zl;}
 	virtual Point getZRight() {return *zr;}
 
-private:
 	Point a, b, c;
+private:
 	Point *xl, *xr, *yl, *yr, *zl, *zr;
 	Vec normal;
 	bool given_normal;

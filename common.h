@@ -21,6 +21,7 @@ typedef Vec Color;
 class Scene;
 class Primitive;
 class KDTree;
+class PlaneLight;
 
 struct Sample
 {
@@ -80,12 +81,16 @@ struct LocalGeometry
 class Light
 {
 	
-	//********************************************************
-	// Generate a Light ray from localGeo.pos to Light source
-	//********************************************************
+	
 public:
-	virtual void generateLightRay(const LocalGeometry& localGeo, Ray& light_ray, Color& color) = 0;
+	Light(Scene* s) : scene(s) {}
+
+	virtual bool computeShadow(const LocalGeometry& localGeo, Ray& light_ray, Color& light_color) = 0;
+	
+protected:
+	Scene* scene;
 };
+
 
 class BRDF
 {
@@ -162,15 +167,16 @@ public:
 
 	void renderPartial(std::pair<double, double> p);
 
+
 	std::vector<Primitive*> objects;
 	std::vector<Light*> light_objects;
+	std::vector<PlaneLight*> plane_lights;
 	Camera camera;
+	KDTree* kd_tree;
 private:
 	Film film;
-	Sample sample;
-	KDTree* kd_tree;
-	RayTracer ray_tracer;
-	
+	Sample sample;	
+	RayTracer ray_tracer;	
 
 	bool super_sampling;
 	int width, height;

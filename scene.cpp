@@ -10,6 +10,7 @@ Scene::Scene(int width, int height, bool super_sampling)
 	super_sampling(super_sampling), kd_tree(nullptr), 
 	camera(width, height), ray_tracer(this, kd_tree), width(width), height(height)
 {
+	srand(unsigned(time(NULL)));
 }
 
 

@@ -1,3 +1,6 @@
+#ifndef __KDTREE_H_
+#define __KDTREE_H_
+
 #include "common.h"
 #include "primitive.h"
 
@@ -28,3 +31,6 @@ private:
 
 	void divideAndBuild(KDNode* root);	
 };
+
+
+#endif

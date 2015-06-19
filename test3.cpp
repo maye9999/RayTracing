@@ -36,8 +36,8 @@ int maina()
 	s4.setMaterial(m4);
 	s5.setMaterial(m5);
 	
-	PointLight light(Point(0, 0, 50), Color(0.5, 0.5, 0.5));
-	PointLight light2(Point(15, -10, 9), Color(0.2, 0.2, 0.2));
+	PointLight light(&scene, Point(0, 0, 50), Color(0.5, 0.5, 0.5));
+	PointLight light2(&scene, Point(15, -10, 9), Color(0.2, 0.2, 0.2));
 
 	scene.objects.insert(scene.objects.end(), &t1);
 	scene.objects.insert(scene.objects.end(), &t2);

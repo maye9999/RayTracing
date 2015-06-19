@@ -2,6 +2,7 @@
 #include "primitive.h"
 #include "phong.h"
 #include "KDTree.h"
+#include "light.h"
 #include <iostream>
 
 using namespace std;
@@ -31,6 +32,17 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color)
 			}
 		}
 	}
+	bool flag = false;
+	for(auto l : scene->plane_lights)
+	{
+		if(l->intersect(ray, t))
+		{
+			color = l->color;
+			flag = true;
+		}
+	}
+	if(flag)
+		return;
 	if(!is_intersect)
 	{
 		color = Vec(0, 0, 0);
@@ -43,26 +55,13 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color)
 		{
 			Ray light_ray;
 			Color light_color;
-			i->generateLightRay(localGeo, light_ray, light_color);
-			bool found = false;
-			if(kd_tree != nullptr)
-				found = kd_tree->intersectWithLight(kd_tree->_root, light_ray);
-			else
-			{
-				for(auto j : scene->objects)
-				{
-					if(j->intersectWithLight(light_ray))
-					{
-						found = true;
-						break;
-					}
-				}
-			}			
+			bool found = i->computeShadow(localGeo, light_ray, light_color);	
 			if(!found)
 			{
 				// Light can cast to that position
-				color += brdf->compute(localGeo, light_ray, light_color, eye_dir);
-				
+				//cout << light_color.x << " " << light_color.y << " " << light_color.z << endl;
+				color += brdf->compute(localGeo, light_ray, light_color, eye_dir);	
+				//cout << color.x << " " << color.y << " " << color.z << endl;
 			}
 		}
 		// Reflect
@@ -114,5 +113,6 @@ void RayTracer::trace(const Ray& ray, int depth, Color& color)
 			}
 		}
 		color = Vec::mul(color, texture_color);
+		//cout << color.x << " " << color.y << " " << color.z << endl;
 	}
 }
