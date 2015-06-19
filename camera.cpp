@@ -1,10 +1,13 @@
 #include "common.h"
 
-void Camera::setCamera(Point eye, Point center, Vec up, double fov)
+void Camera::setCamera(Point eye, Point center, Vec up, double fov, bool DOF, double aperture, double distance)
 {
 	this->eye = eye;
 	this->center = center;
 	this->up = up;
+	this->aperture = aperture;
+	this->use_DOF = DOF;
+	this->focal_distance = distance;
 	w = Vec::normalize(eye - center);
 	u = Vec::normalize(Vec::cross(up, w));
 	v = Vec::normalize(Vec::cross(w, u));
@@ -19,5 +22,12 @@ void Camera::generateRay(const Sample& sample, Ray& ray)
 	ray.direction = Vec::normalize(alpha * u + beta * v - w);
 	ray.start_position = eye;
 	ray.t_max = T_MAX;
-	ray.t_min = 0;
+	ray.t_min = 0;		
+	if (use_DOF)
+	{
+		Point c = eye + focal_distance * ray.direction;
+		Point r = ((double)rand() / RAND_MAX - 0.5) * aperture * u + ((double)rand() / RAND_MAX - 0.5) * aperture * v + eye;
+		ray.direction = Vec::normalize(c - r);
+		ray.start_position = r;
+	}
 }

@@ -10,12 +10,12 @@ using namespace std;
 
 int main()
 {
-	Scene scene(800, 600, false);
+	Scene scene(800, 600, false, 50);
 
 	PhongBRDF brdf;
 	Material material(Vec(0.0, 0.1, 0.0), Vec(0.2, 0.4, 0.2), Vec(0.1, 0.1, 0.1), 20, Vec(0, 0, 0)/*, Vec(0.9, 0.9, 0.9), 1.5*/);
 	Material mat_refr(Color(0.15, 0.15, 0.15), Color(0., 0., 0.), Color(0.4, 0.4, 0.4), 20, Color(0, 0, 0), Color(0.9, 0.9, 0.9), 1.5);
-	Material mat_refl(Color(0.1, 0.1, 0.1), Color(0., 0., 0.), Color(0.3, 0.3, 0.3), 20, Color(0.8, 0.8, 0.8));
+	Material mat_refl(Color(0.1, 0.1, 0.1), Color(0.1, 0.1, 0.1), Color(0.4, 0.4, 0.4), 20, Color(0.4, 0.4, 0.4));
 	Material mat_red(Color(0.1, 0.0, 0.0), Color(0.5, 0.2, 0.2), Color(0.3, 0.3, 0.3), 20);
 	Material mat_green(Color(0, 0.1, 0.0), Color(0.2, 0.5, 0.2), Color(0.3, 0.3, 0.3), 20);
 	Material mat_blue(Color(0, 0.0, 0.1), Color(0.2, 0.2, 0.5), Color(0.3, 0.3, 0.3), 20);
@@ -25,50 +25,51 @@ int main()
 	scene.plane_lights.push_back(&pl);
 	scene.light_objects.push_back(&pl);
 
-	ObjFile* file = new ObjFile("dragon.obj");
-	if(!scene.loadFile(file))
-	{
-		return -1;
-	}
-	int t = scene.objects.size();
-	for(auto p : scene.objects)
-	{
-		auto pp = (Triangle*)p;
-		pp->a.x += 1;
-		pp->a.y -= 1;
-		pp->b.x += 1;
-		pp->b.y -= 1;
-		pp->c.x += 1;
-		pp->c.y -= 1;
-		pp->setMaterial(&mat_blue);
-	}
-	ObjFile* file2 = new ObjFile("bunny.obj");
-	if(!scene.loadFile(file2))
-	{
-		return -1;
-	}
-	for(int i = t; i < scene.objects.size(); ++i)
-	{
-		auto pp = (Triangle*)scene.objects[i];
-		pp->setMaterial(&mat_green);
-		pp->a += Vec(1.2, 1, 0.1);
-		pp->b += Vec(1.2, 1, 0.1);
-		pp->c += Vec(1.2, 1, 0.1);
-	}
-	t = scene.objects.size();
-	ObjFile* file3 = new ObjFile("dinosaur.obj");
-	if(!scene.loadFile(file3))
-	{
-		return -1;
-	}
-	for(int i = t; i < scene.objects.size(); ++i)
-	{
-		auto pp = (Triangle*)scene.objects[i];
-		pp->setMaterial(&mat_red);
-		pp->a += Vec(0.8, 0, 0.07);
-		pp->b += Vec(0.8, 0, 0.07);
-		pp->c += Vec(0.8, 0, 0.07);
-	}
+// 	ObjFile* file = new ObjFile("dragon.obj");
+// 	if(!scene.loadFile(file))
+// 	{
+// 		return -1;
+// 	}
+// 	int t = scene.objects.size();
+// 	for(auto p : scene.objects)
+// 	{
+// 		auto pp = (Triangle*)p;
+// 		pp->a.x += 1.2;
+// 		pp->a.y += 1;
+// 		pp->b.x += 1.2;
+// 		pp->b.y += 1;
+// 		pp->c.x += 1.2;
+// 		pp->c.y += 1;
+// 		pp->setMaterial(&mat_green);
+// 	}
+	int t = 0;
+// 	ObjFile* file2 = new ObjFile("bunny.obj");
+// 	if(!scene.loadFile(file2))
+// 	{
+// 		return -1;
+// 	}
+// 	for(int i = t; i < scene.objects.size(); ++i)
+// 	{
+// 		auto pp = (Triangle*)scene.objects[i];
+// 		pp->setMaterial(&mat_blue);
+// 		pp->a += Vec(0.8, -1, 0.1);
+// 		pp->b += Vec(0.8, -1, 0.1);
+// 		pp->c += Vec(0.8, -1, 0.1);
+// 	}
+// 	t = scene.objects.size();
+// 	ObjFile* file3 = new ObjFile("dinosaur.obj");
+// 	if(!scene.loadFile(file3))
+// 	{
+// 		return -1;
+// 	}
+// 	for(int i = t; i < scene.objects.size(); ++i)
+// 	{
+// 		auto pp = (Triangle*)scene.objects[i];
+// 		pp->setMaterial(&mat_red);
+// 		pp->a += Vec(0.8, 0, 0.07);
+// 		pp->b += Vec(0.8, 0, 0.07);
+// 		pp->c += Vec(0.8, 0, 0.07);
+// 	}
 	// X-Y
 	Triangle t1(Point(-2, -2, -0.35), Point(-2, 2, -0.35), Point(2, 2, -0.35));
 	Triangle t2(Point(-2, -2, -0.35), Point(2, -2, -0.35), Point(2, 2, -0.35));
@@ -128,7 +129,7 @@ int main()
 	//scene.light_objects.push_back(&light2);
 	//scene.light_objects.push_back(&light3);
 	
-	scene.camera.setCamera(Point(5, 0, 1.0), Point(0, 0, 1.0), Vec(0, 0, 1), 45);
+	scene.camera.setCamera(Point(5, 0, 1.0), Point(0, 0, 1.0), Vec(0, 0, 1), 45, false, 1.0, 5);
 	scene.render(8, true);
 	return 0;
 }

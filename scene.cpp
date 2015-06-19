@@ -5,9 +5,9 @@
 
 using namespace std;
 
-Scene::Scene(int width, int height, bool super_sampling)
+Scene::Scene(int width, int height, bool super_sampling, int DOF_times)
 	: sample(0.5, 0.5), film(width, height, super_sampling),
-	super_sampling(super_sampling), kd_tree(nullptr), 
+	super_sampling(super_sampling), kd_tree(nullptr), DOF_times(DOF_times), 
 	camera(width, height), ray_tracer(this, kd_tree), width(width), height(height)
 {
 	srand(unsigned(time(NULL)));
@@ -37,11 +37,25 @@ void Scene::renderPartial(pair<double, double> p)
 		}
 // 		if(s.x == 430.5 && s.y == 250.5)
 // 			cout << "tt" << endl;
-		Ray ray;
-		camera.generateRay(s, ray);
-		Color color = Color(0, 0, 0);
 		//m.lock();
-		ray_tracer.trace(ray, 0, color);		
+		Ray ray;
+		Color color = Color(0, 0, 0);
+		if(!camera.use_DOF)
+		{
+			camera.generateRay(s, ray);
+			ray_tracer.trace(ray, 0, color);
+		}
+		else
+		{
+			for (int i = 0; i < DOF_times; ++i)
+			{
+				Color t(0, 0, 0);
+				camera.generateRay(s, ray);
+				ray_tracer.trace(ray, 0, t);
+				color += t;
+			}
+			color = 1.0 / DOF_times * color;
+		}
 		film.commit(s, color);
 		//m.unlock();
 	}

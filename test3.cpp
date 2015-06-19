@@ -10,7 +10,7 @@ using namespace std;
 
 int maina()
 {
-	Scene scene(1920, 1440, true);
+	Scene scene(800, 600, false, 4);
 	//Scene scene(640, 480, false);
 	BRDF *brdf = new PhongBRDF;
 
@@ -48,8 +48,8 @@ int maina()
 	scene.objects.push_back(&s5);
 	scene.light_objects.insert(scene.light_objects.end(), &light);
 	scene.light_objects.insert(scene.light_objects.end(), &light2);
-	scene.camera.setCamera(Point(30, -30, 4), Point(0, 0, 4), Vec(0, 0, 1), 40);
+	scene.camera.setCamera(Point(30, -30, 4), Point(0, 0, 4), Vec(0, 0, 1), 40, true, 1.0, 20);
 	scene.setGlobalBRDF(brdf);
-	scene.render(1, true);
+	scene.render(8, true);
 	return 0;
 }

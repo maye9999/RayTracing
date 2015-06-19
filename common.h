@@ -117,12 +117,15 @@ struct Sampler
 struct Camera
 {
 	Camera(int width, int height) : width(width), height(height) {}
-	void setCamera(Point eye, Point center, Vec up, double fov);
+	void setCamera(Point eye, Point center, Vec up, double fov, bool DOF = false, double aperture = 0, double distance = 0);
 	void generateRay(const Sample& sample, Ray& ray);
 	Vec w, u, v;
 	Point eye, center, up;
 	int width, height;
+	double aperture;
+	double focal_distance;
 	double fovx_tan, fovy_tan;
+	bool use_DOF;
 };
 
 
@@ -158,7 +161,7 @@ public:
 class Scene
 {
 public:
-	Scene(int width, int height, bool super_sampling = false);
+	Scene(int width, int height, bool super_sampling = false, int DOF_times = 0);
 	void render(int cores = 1, bool use_kd_tree = false);
 
 	bool loadFile(File* f)	{return f->parse(objects);}
@@ -180,6 +183,7 @@ private:
 
 	bool super_sampling;
 	int width, height;
+	int DOF_times;
 	std::mutex m;
 	
 };
